@@ -16,7 +16,9 @@
      <script>
        $(function() {
            $('#original').on('keyup', function() {
-              $('#converted').val(WikiTextConverter.hatenak2textile($(this).val()));
+              var type = $('#type').val();
+              var func = WikiTextConverter[type];
+              $('#converted').val(func($(this).val()));
            });
        });
     </script>
@@ -37,6 +39,12 @@
       <section>
         <h3>Original</h3>
         <textarea id="original" cols="50" rows="20"></textarea>
+        <br>
+        <select id="type">
+            <option value="hatenak2textile">Hatena => Textile</option>
+            <option value="textile2hatenak">Textile => Hatena</option>
+            <option value="hatenak2markdown">Hatena => Markdown</option>
+        </select>
         <h3>Converted</h3>
         <textarea id="converted" cols="50" rows="20"></textarea>
       </section>
