@@ -27,6 +27,11 @@ if (typeof(WikiTextConverter) == 'undefined') {
         // list
         text = text.replace(/^([\-]+)/mg, function () {return arguments[0].replace(/\-/g, '*')});
         text = text.replace(/^([\+]+)/mg, function () {return arguments[0].replace(/\+/g, '#')});
+
+        // link
+        text = text.replace(/\[(https?:\/\/.*?)(?:\:title=(.*?))\]/mg, function () {
+            return '"' + arguments[2] + '":' + arguments[1];
+        });
         return text;
     }
     WikiTextConverter.hatenak2markdown = function(text) {
@@ -43,7 +48,14 @@ if (typeof(WikiTextConverter) == 'undefined') {
         });
 
         // TODO list
+        //text = text.replace(/^([\-]+)/mg, function () {
+        //    return arguments[0].replace(/([\-]+)\-/g, function() {return arguments[1].replace('-','    ') + '*' });
+        //});
 
+        // link
+        text = text.replace(/\[(https?:\/\/.*?)(?:\:title=(.*?))\]/mg, function () {
+            return '[' + arguments[2] + '](' + arguments[1] + ')';
+        });
         return text;
     }
     /* => Hatena */
@@ -69,6 +81,8 @@ if (typeof(WikiTextConverter) == 'undefined') {
         text = text.replace(/^([\*]+)/mg, function () {return arguments[0].replace(/\*/g, '-')});
         text = text.replace(/^([#]+)/mg, function () {return arguments[0].replace(/#/g, '+')});
 
+        // TODO link
+
         // Headline
         text = text.replace(/^h([1-4]{1})\. (.*)/mg, function() {
             var count = arguments[1] - 0;
@@ -93,6 +107,11 @@ if (typeof(WikiTextConverter) == 'undefined') {
         });
 
         // TODO list
+
+        // link
+        text = text.replace(/\[(.*?)\]\((https?:\/\/.*?)\)/mg, function () {
+            return '[' + arguments[2] + ':title='+ arguments[1] + ']';
+        });
 
         return text;
     }
