@@ -1,6 +1,7 @@
 if (typeof(WikiTextConverter) == 'undefined') {
     WikiTextConverter = {};
     WikiTextConverter.VERSION = 0.1;
+    /*  Hatena => */
     WikiTextConverter.hatenak2textile = function(text) {
         // Headline
         var headline = function() {return 'h' + (arguments[1].split('*').length - 1) + '. ' + arguments[2] + '\n'}
@@ -18,6 +19,11 @@ if (typeof(WikiTextConverter) == 'undefined') {
             }
         });
 
+        // blockquote
+        text = text.replace(/^\>\>\n([\s\S]*?)\n\<\</mg, function() {
+            return 'bq.' + arguments[1] + '\n';
+        });
+
         // list
         text = text.replace(/^([\-]+)/mg, function () {return arguments[0].replace(/\-/g, '*')});
         text = text.replace(/^([\+]+)/mg, function () {return arguments[0].replace(/\+/g, '#')});
@@ -31,11 +37,16 @@ if (typeof(WikiTextConverter) == 'undefined') {
 
         // pre none
 
-        // list
-        // TODO
+        // blockquote
+        text = text.replace(/^\>\>\n([\s\S]*?)\n\<\</mg, function() {
+            return '> ' + arguments[1] + '\n';
+        });
+
+        // TODO list
 
         return text;
     }
+    /* => Hatena */
     WikiTextConverter.textile2hatenak = function(text) {
 
         // table
@@ -47,6 +58,11 @@ if (typeof(WikiTextConverter) == 'undefined') {
         });
         text = text.replace(/^\<pre\>\n([\s\S]*?)\n\<\/pre\>\n/mg, function() {
             return '>||\n' + arguments[1] + '\n||<\n';
+        });
+
+        // blockquote
+        text = text.replace(/^bq\.([\s\S]*?)\n\n/mg, function() {
+            return '>>\n' + arguments[1] + '\n<<\n';
         });
 
         // list
@@ -62,5 +78,29 @@ if (typeof(WikiTextConverter) == 'undefined') {
         });
 
         return text;
+    }
+    WikiTextConverter.markdown2hatenak = function(text) {
+        // Headline
+        text = text.replace(/^([\#]{1,4})/mg, function () {return arguments[0].replace(/#/g, '*')});
+
+        // table none
+
+        // pre none
+
+        // blockquote
+        text = text.replace(/^> ([\s\S]*?)\n\n/mg, function() {
+            return '>>\n' + arguments[1] + '\n<<\n';
+        });
+
+        // TODO list
+
+        return text;
+    }
+    /* => Hatena => */
+    WikiTextConverter.textile2markdown = function(text) {
+        return WikiTextConverter.hatenak2markdown(WikiTextConverter.textile2hatenak(text));
+    }
+    WikiTextConverter.markdown2textile = function(text) {
+        return WikiTextConverter.hatenak2textile(WikiTextConverter.markdown2hatenak(text));
     }
 }
