@@ -15,11 +15,15 @@
      <script src="./wikitextconverter.js"></script>
      <script>
        $(function() {
-           $('#original').on('keyup', function() {
-              var type = $('#type').val();
-              var func = WikiTextConverter[type];
-              $('#converted').val(func($(this).val()));
-           });
+           var $original = $('#original');
+           var $type = $('#type');
+           var updatePreview = function () {
+             var type = $type.val();
+             var func = WikiTextConverter[type];
+             $('#converted').val(func($original.val()));
+           };
+           $original.on('keyup', updatePreview);
+           $type.on('change', updatePreview);
        });
     </script>
     </head>
