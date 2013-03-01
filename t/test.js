@@ -1,5 +1,6 @@
 var fs = require('fs');
 var vm = require('vm');
+var assert = require('assert');
 
 
 var includeInThisContext = function(path) {
@@ -8,19 +9,28 @@ var includeInThisContext = function(path) {
 }.bind(this);
 includeInThisContext("../wikitextconverter.js");
 
-var is = function() {
-    if (arguments[0] === arguments[1]) console.log('ok',(arguments[2]) ? arguments[2] : "");
-    else console.log('ng', arguments[0], arguments[1]);
-}
-
 
 console.log("=== start test ===");
 console.log("=== typeof ===");
-is( typeof WikiTextConverter, "object" );
-is( typeof WikiTextConverter.hatenak2textile, "function" );
-is( typeof WikiTextConverter.hatenak2markdown, "function" );
-is( typeof WikiTextConverter.textile2hatenak, "function" );
-is( typeof WikiTextConverter.markdown2hatenak, "function" );
+assert.equal( typeof WikiTextConverter, "object" );
+assert.equal( typeof WikiTextConverter.hatenak2textile, "function" );
+assert.equal( typeof WikiTextConverter.hatenak2markdown, "function" );
+assert.equal( typeof WikiTextConverter.textile2hatenak, "function" );
+assert.equal( typeof WikiTextConverter.markdown2hatenak, "function" );
 
 console.log("=== hatenak2textile ===");
-var hatena2text = "";
+var textHatenaExpected = fs.readFileSync('./assets/text-hatena.txt','utf-8');
+var textTexileExpected = fs.readFileSync('./assets/text-textile.txt','utf-8');
+
+var textTexileActual = WikiTextConverter.hatenak2textile(textHatenaExpected);
+
+//assert.equal( textTexileActual , textTexileExpected );
+
+console.log("=== hatenak2markdown ===");
+assert.equal( WikiTextConverter.hatenak2markdown('*headline') , '#headline' );
+assert.equal( WikiTextConverter.hatenak2markdown('**headline') , '##headline' );
+assert.equal( WikiTextConverter.hatenak2markdown('***headline') , '###headline' );
+assert.equal( WikiTextConverter.hatenak2markdown('****headline') , '####headline' );
+assert.equal( WikiTextConverter.hatenak2markdown('-list') , '-list' );
+assert.equal( WikiTextConverter.hatenak2markdown('--list') , '    -list' );
+assert.equal( WikiTextConverter.hatenak2markdown('---list') , '        -list' );

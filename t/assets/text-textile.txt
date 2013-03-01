@@ -1,0 +1,55 @@
+h1.  headline1
+
+h2.  headline2
+
+I am a boy. This is a pen.
+
+h3.  headline3
+
+I am a girl. This is a tree.
+
+h2.  headline2-2
+
+TGIF!
+
+h3.  list
+
+*blue
+**deep blue
+***ocean
+*peach
+
+#blue
+##deep blue
+###ocean
+#peach
+
+h3.  defined
+
+:Kyoto-Fu:Kyoto-City
+
+h3.  table
+
+|_. name|_. color|_. count|
+|apple|red|1|
+|meron|green|2|
+
+h3.  pre
+
+>||      
+#!/usr/bin/perl -w
+use strict;
+print <<END;
+<html><body>
+  <h1>Hello! World.</h1>
+</body></html>
+END
+||<
+
+<pre><code class="ruby">
+class Foo
+  def bar'baz' # return baz
+  end
+end
+</code></pre>
+
