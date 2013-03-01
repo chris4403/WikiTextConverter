@@ -48,9 +48,9 @@ if (typeof(WikiTextConverter) == 'undefined') {
         });
 
         // TODO list
-        //text = text.replace(/^([\-]+)/mg, function () {
-        //    return arguments[0].replace(/([\-]+)\-/g, function() {return arguments[1].replace('-','    ') + '*' });
-        //});
+        text = text.replace(/^([\-]+)\-/mg, function () {
+            return arguments[1].replace(/\-/g,'    ') + '-';
+        });
 
         // link
         text = text.replace(/\[(https?:\/\/.*?)(?:\:title=(.*?))\]/mg, function () {
