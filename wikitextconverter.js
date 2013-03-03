@@ -30,7 +30,7 @@ if (typeof(WikiTextConverter) == 'undefined') {
 
         // link
         text = text.replace(/\[(https?:\/\/.*?)(?:\:title=(.*?))\]/mg, function () {
-            return '"' + arguments[2] + '":' + arguments[1];
+            return '"' + arguments[2] + '":' + arguments[1] + " ";
         });
         return text;
     }
@@ -47,9 +47,12 @@ if (typeof(WikiTextConverter) == 'undefined') {
             return '> ' + arguments[1] + '\n';
         });
 
-        // TODO list
+        // list
         text = text.replace(/^([\-]+)\-/mg, function () {
             return arguments[1].replace(/\-/g,'    ') + '-';
+        });
+        text = text.replace(/^([\+]+)?\+/mg, function () {
+            return ((arguments[1]) ? arguments[1].replace(/\+/g,'    ') : '' ) + '1.';
         });
 
         // link
@@ -84,7 +87,7 @@ if (typeof(WikiTextConverter) == 'undefined') {
         // TODO link
 
         // Headline
-        text = text.replace(/^h([1-4]{1})\. (.*)/mg, function() {
+        text = text.replace(/^h([1-4]{1})\. (.*)\n/mg, function() {
             var count = arguments[1] - 0;
             var headline = "";
             for (var i = 0; i < count; i++) {headline += "*";}
@@ -95,7 +98,7 @@ if (typeof(WikiTextConverter) == 'undefined') {
     }
     WikiTextConverter.markdown2hatenak = function(text) {
         // Headline
-        text = text.replace(/^([\#]{1,4})/mg, function () {return arguments[0].replace(/#/g, '*')});
+        text = text.replace(/^([\#]{1,4})/mg, function () {return arguments[0].replace(/\#/g, '*')});
 
         // table none
 
@@ -106,7 +109,13 @@ if (typeof(WikiTextConverter) == 'undefined') {
             return '>>\n' + arguments[1] + '\n<<\n';
         });
 
-        // TODO list
+        // list
+        text = text.replace(/^((?:[ ]{4})+)\-/mg, function () {
+            return arguments[1].replace(/[ ]{4}/g,'-') + '-';
+        });
+        text = text.replace(/^([ ]+)?(?:[0-9]+\.)/mg, function () {
+            return ((arguments[1]) ? arguments[1].replace(/[ ]{4}/g,'+') : '' ) + '+';
+        });
 
         // link
         text = text.replace(/\[(.*?)\]\((https?:\/\/.*?)\)/mg, function () {
