@@ -32,6 +32,10 @@ if (typeof(WikiTextConverter) == 'undefined') {
         text = text.replace(/\[(https?:\/\/.*?)(?:\:title=(.*?))\]/mg, function () {
             return '"' + arguments[2] + '":' + arguments[1] + " ";
         });
+
+        // index
+        text = text.replace(/^\[\:contents\]/g,"{{>toc}}");
+
         return text;
     }
     WikiTextConverter.hatenak2markdown = function(text) {
@@ -94,6 +98,8 @@ if (typeof(WikiTextConverter) == 'undefined') {
             return headline + arguments[2];
         });
 
+        // index
+        text = text.replace(/\{\{>?toc\}\}/g,"[:contents]");
         return text;
     }
     WikiTextConverter.markdown2hatenak = function(text) {

@@ -31,6 +31,7 @@ assert.equal( WikiTextConverter.hatenak2textile('++list') , '##list' );
 assert.equal( WikiTextConverter.hatenak2textile('+++list') , '###list' );
 assert.equal( WikiTextConverter.hatenak2textile('abc[http://example.com/hoge:title=link name]def')
                                                     , 'abc"link name":http://example.com/hoge def' );
+assert.equal( WikiTextConverter.hatenak2textile('[:contents]') , '{{>toc}}' );
 
 var textHatenaExpected = fs.readFileSync('./assets/text-hatena.txt','utf-8');
 var textTexileExpected = fs.readFileSync('./assets/text-textile.txt','utf-8');
@@ -49,6 +50,8 @@ assert.equal( WikiTextConverter.textile2hatenak('***list') , '---list' );
 assert.equal( WikiTextConverter.textile2hatenak('#list') , '+list' );
 assert.equal( WikiTextConverter.textile2hatenak('##list') , '++list' );
 assert.equal( WikiTextConverter.textile2hatenak('###list') , '+++list' );
+assert.equal( WikiTextConverter.textile2hatenak('{{toc}}') , '[:contents]' );
+assert.equal( WikiTextConverter.textile2hatenak('{{>toc}}') , '[:contents]' );
 
 console.log("=== hatenak2markdown ===");
 assert.equal( WikiTextConverter.hatenak2markdown('*headline') , '#headline' );
