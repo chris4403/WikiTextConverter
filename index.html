@@ -13,19 +13,7 @@
     <![endif]-->
      <script src="./jquery-1.9.1.min.js"></script>
      <script src="./wikitextconverter.js"></script>
-     <script>
-       $(function() {
-           var $original = $('#original');
-           var $type = $('#type');
-           var updatePreview = function () {
-             var type = $type.val();
-             var func = WikiTextConverter[type];
-             $('#converted').val(func($original.val()));
-           };
-           $original.on('keyup', updatePreview);
-           $type.on('change', updatePreview);
-       });
-    </script>
+     <script src="./index.js"></script>
     </head>
   <body>
     <div class="wrapper">
